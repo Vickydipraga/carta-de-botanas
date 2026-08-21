@@ -1,0 +1,14 @@
+# Archivos locales de ejecución
+server.out.log
+server.err.log
+
+# Configuración local de Vercel
+.vercel/
+
+# Fotos originales de trabajo (la web no las utiliza)
+Carta/
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.vscode/

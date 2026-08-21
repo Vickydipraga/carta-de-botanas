@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#171717" />
+    <title>De Botanas | Mozo</title>
+    <meta name="description" content="Pantalla de mozo para escanear QR y tomar pedidos del local." />
+    <link rel="stylesheet" href="mozo.css" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" defer></script>
+    <script src="mozo.js" defer></script>
+  </head>
+  <body>
+    <section class="login-screen" id="loginScreen">
+      <form class="login-card" id="loginForm">
+        <div class="login-brand">
+          <img src="Logo/Logo-de-Botanas-Market-Negro.png" alt="De Botanas" />
+        </div>
+        <div>
+          <span class="login-kicker">Acceso de mozo</span>
+          <h1>Iniciar sesión</h1>
+          <p>Cada pedido tomado queda identificado con la persona que inició sesión en este celular.</p>
+        </div>
+        <label>
+          PIN del mozo
+          <input id="waiterPinInput" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Ej: 1234" required />
+        </label>
+        <p class="login-error" id="loginError" aria-live="polite"></p>
+        <button class="primary-button" type="submit">
+          <i data-lucide="log-in"></i>
+          Entrar
+        </button>
+        <details class="admin-access">
+          <summary>Entrar a administración</summary>
+          <label>
+            Código de administrador
+            <input id="adminCodeInput" type="password" inputmode="numeric" autocomplete="off" placeholder="Código admin" />
+          </label>
+          <button class="secondary-button" id="adminAccessButton" type="button">
+            <i data-lucide="shield-check"></i>
+            Abrir administración
+          </button>
+          <p id="adminAccessStatus" aria-live="polite"></p>
+        </details>
+      </form>
+    </section>
+
+    <main class="waiter-app" id="waiterApp" hidden>
+      <header class="waiter-header">
+        <a class="brand-link" href="index.html" aria-label="Volver a la carta">
+          <img src="Logo/Logo-de-Botanas-Market-Negro.png" alt="De Botanas" />
+        </a>
+        <div class="session-box">
+          <span>
+            <strong id="sessionWaiterName">Mozo</strong>
+            <small>Sesión activa</small>
+          </span>
+          <button id="logoutButton" type="button" aria-label="Cerrar sesión">
+            <i data-lucide="log-out"></i>
+          </button>
+        </div>
+      </header>
+
+      <section class="floor-card">
+        <div class="floor-head">
+          <div>
+            <span>Salón</span>
+            <h1>Elegí sector y mesa</h1>
+          </div>
+          <strong id="selectedTableLabel">Sin mesa</strong>
+        </div>
+        <div class="sector-tabs" id="sectorTabs" aria-label="Sectores del restaurante"></div>
+        <div class="table-map" id="tableMap" aria-label="Mesas del sector"></div>
+      </section>
+
+      <section class="scanner-card" id="scannerCard" hidden>
+        <div class="scanner-head">
+          <div>
+            <span id="scannerTableLabel">Mesa seleccionada</span>
+            <h1>Escaneá el pedido</h1>
+          </div>
+          <button class="icon-action" id="switchCameraButton" type="button" aria-label="Cambiar cámara" disabled>
+            <i data-lucide="refresh-cw"></i>
+          </button>
+        </div>
+
+        <div class="camera-frame" id="cameraFrame" hidden>
+          <video id="scannerVideo" playsinline muted></video>
+          <canvas id="scanCanvas" hidden></canvas>
+          <div class="scan-guide">
+            <span></span>
+          </div>
+          <p id="scannerStatus">Apuntá al QR del cliente.</p>
+        </div>
+
+        <div class="scanner-actions">
+          <button class="primary-button" id="startScannerButton" type="button">
+            <i data-lucide="camera"></i>
+            Abrir lector
+          </button>
+          <button class="secondary-button" id="stopScannerButton" type="button" disabled>
+            <i data-lucide="x"></i>
+            Cerrar lector
+          </button>
+        </div>
+
+        <details class="manual-box">
+          <summary>Cargar código manualmente</summary>
+          <textarea id="manualPayload" rows="5" placeholder="Pegá acá el texto del QR si no se puede usar la cámara."></textarea>
+          <button class="secondary-button" id="parseManualButton" type="button">
+            <i data-lucide="scan-text"></i>
+            Leer pedido
+          </button>
+        </details>
+      </section>
+
+      <section class="order-card" id="currentOrderCard" hidden>
+        <div class="order-card-head">
+          <div>
+            <span id="orderCodeLabel">Pedido</span>
+            <h2 id="orderTypeLabel">En el local</h2>
+          </div>
+          <strong id="orderTotalLabel">$ 0</strong>
+        </div>
+
+        <div class="order-lines" id="orderLines"></div>
+
+        <div class="note-box" id="noteBox" hidden>
+          <span>Aclaraciones</span>
+          <p id="orderNoteLabel"></p>
+        </div>
+
+        <div class="selected-table-box">
+          <span>Mesa asignada</span>
+          <strong id="orderTableLabel">Seleccioná una mesa</strong>
+        </div>
+
+        <div class="order-actions">
+          <button class="secondary-button" id="copyOrderButton" type="button">
+            <i data-lucide="copy"></i>
+            Copiar
+          </button>
+          <button class="primary-button" id="takeOrderButton" type="button">
+            <i data-lucide="check"></i>
+            Tomar pedido
+          </button>
+        </div>
+      </section>
+
+      <section class="taken-section">
+        <div class="taken-head">
+          <div>
+            <span>Hoy</span>
+            <h2>Pedidos tomados</h2>
+          </div>
+          <button class="text-button" id="clearTakenButton" type="button">Limpiar</button>
+        </div>
+        <div class="taken-list" id="takenList"></div>
+      </section>
+    </main>
+  </body>
+</html>

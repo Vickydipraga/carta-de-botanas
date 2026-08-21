@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#fbf7ef" />
+    <title>Carta De Botanas</title>
+    <meta name="description" content="Carta digital simple, visual y dinámica para restaurante." />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="mobile-app">
+      <header class="app-header">
+        <a class="brand" href="#" aria-label="Carta De Botanas">
+          <img class="brand-logo" src="Logo/Logo-de-Botanas-Market-Negro.png" alt="De Botanas" />
+          <strong id="brandTitle" class="sr-only">DE BOTANAS</strong>
+          <small id="brandSubtitle" class="sr-only">CARTA DIGITAL</small>
+        </a>
+
+      </header>
+
+      <main>
+        <section class="section-head" id="recommendedHeading">
+          <h1><i data-lucide="flame"></i> Recomendados</h1>
+        </section>
+
+        <section class="hero-slider" id="heroSlider" aria-label="Platos recomendados">
+          <div class="hero-track" id="heroTrack"></div>
+        </section>
+
+        <div class="slider-dots" id="heroDots" aria-label="Destacados"></div>
+
+        <section class="category-strip" id="categoryRow" aria-label="Categorías"></section>
+        <section class="subcategory-strip" id="subcategoryRow" aria-label="Subcategorías" hidden></section>
+        <aside class="menu-notice" id="menuNotice" hidden></aside>
+
+        <section class="dish-list" id="popularGrid" aria-live="polite"></section>
+
+        <section class="promo-card">
+          <div class="promo-content">
+            <p class="promo-eyebrow">ELEVÁ TU EXPERIENCIA</p>
+            <div class="promo-line"></div>
+            <h2 class="promo-title">Sumá un trago, cerveza o vino a tu pedido.</h2>
+            <button class="promo-button" type="button" id="bannerButton">
+              Ver tragos
+              <i data-lucide="arrow-right"></i>
+            </button>
+          </div>
+          <div class="promo-image-wrap">
+            <img
+              class="promo-image"
+              src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=86"
+              alt="Vino y acompañamiento"
+            />
+          </div>
+        </section>
+
+        <section class="quick-actions" aria-label="Accesos rapidos del local">
+          <a class="quick-action quick-action-share" id="shareCartaLink" href="#" target="_blank" rel="noreferrer" aria-label="Compartir carta por WhatsApp">
+            <i data-lucide="send"></i>
+            <span>Carta</span>
+          </a>
+          <a class="quick-action quick-action-whatsapp" id="quickWhatsappLink" href="#" target="_blank" rel="noreferrer" aria-label="Contactar por WhatsApp">
+            <i data-lucide="message-circle"></i>
+            <span>WhatsApp</span>
+          </a>
+          <a class="quick-action quick-action-instagram" id="quickInstagramLink" href="#" target="_blank" rel="noreferrer" aria-label="Abrir Instagram">
+            <span class="quick-brand-icon" aria-hidden="true">IG</span>
+            <span>Instagram</span>
+          </a>
+          <a class="quick-action quick-action-map" id="quickMapsLink" href="#" target="_blank" rel="noreferrer" aria-label="Abrir ubicacion en Google Maps">
+            <i data-lucide="map-pin"></i>
+            <span>Ubicacion</span>
+          </a>
+        </section>
+      </main>
+
+      <button class="floating-cart" id="floatingCart" type="button" hidden aria-label="Ver pedido" data-open-order>
+        <i data-lucide="utensils"></i>
+        <span id="floatingBadge">0</span>
+      </button>
+
+      <div class="cart-toast" id="cartToast" role="status" aria-live="polite" aria-atomic="true" hidden>
+        <span class="cart-toast-icon" aria-hidden="true"><i data-lucide="check"></i></span>
+        <span class="cart-toast-copy">
+          <strong id="cartToastName">Producto agregado</strong>
+          <small id="cartToastDetail">Agregado al carrito</small>
+        </span>
+      </div>
+
+    </div>
+
+    <aside class="order-panel" id="orderPanel" hidden>
+      <div class="order-head">
+        <div>
+          <span id="orderCount">0 productos</span>
+          <strong id="orderTotal">$ 0</strong>
+        </div>
+        <button class="order-close" id="closeOrderButton" type="button" aria-label="Cerrar pedido">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="order-items" id="orderItems"></div>
+      <label class="order-note" for="orderNote">
+        <span>Aclaraciones</span>
+        <textarea id="orderNote" rows="2" placeholder="Ej: sin cebolla, punto de cocción, retirar en local..."></textarea>
+      </label>
+      <div class="order-actions">
+        <button class="clear-order" id="clearOrderButton" type="button">Vaciar</button>
+        <button class="local-order-button" id="localOrderButton" type="button">
+          En el local
+          <i data-lucide="qr-code"></i>
+        </button>
+        <a class="delivery-order-button" id="whatsappButton" href="#" target="_blank" rel="noreferrer">
+          Delivery
+          <i data-lucide="send"></i>
+        </a>
+      </div>
+    </aside>
+
+    <div class="dialog-backdrop" id="reviewDialog" hidden>
+      <article class="review-dialog" role="dialog" aria-modal="true" aria-labelledby="reviewTitle">
+        <button class="dialog-close" id="closeReviewButton" type="button" aria-label="Cerrar revisión">
+          <i data-lucide="x"></i>
+        </button>
+        <div class="review-body">
+          <span>Pedido en el local</span>
+          <h2 id="reviewTitle">Revisá tu pedido</h2>
+          <div class="review-items" id="reviewItems"></div>
+          <div class="review-meta">
+            <p id="reviewTable">El mozo asigna la mesa al escanear el QR.</p>
+            <p id="reviewNote"></p>
+          </div>
+          <div class="review-total">
+            <span>Total</span>
+            <strong id="reviewTotal">$ 0</strong>
+          </div>
+          <button class="primary-action" id="confirmLocalButton" type="button">
+            Confirmar y generar QR
+            <i data-lucide="qr-code"></i>
+          </button>
+        </div>
+      </article>
+    </div>
+
+    <div class="dialog-backdrop" id="qrDialog" hidden>
+      <article class="qr-dialog" role="dialog" aria-modal="true" aria-labelledby="qrTitle">
+        <button class="dialog-close" id="closeQrButton" type="button" aria-label="Cerrar código QR">
+          <i data-lucide="x"></i>
+        </button>
+        <div class="qr-body">
+          <span id="qrCodeLabel">Pedido confirmado</span>
+          <h2 id="qrTitle">Mostrale este QR al mozo</h2>
+          <div class="qr-box">
+            <div id="orderQrNode" class="qr-node" aria-label="Código QR del pedido"></div>
+            <canvas id="orderQrCanvas" width="240" height="240" aria-label="Código QR del pedido"></canvas>
+            <img id="orderQrImage" alt="Código QR del pedido" hidden />
+            <div class="qr-fallback" id="qrFallback" hidden></div>
+          </div>
+          <p>Al escanearlo aparece el pedido completo con total y aclaraciones. La mesa la asigna el mozo.</p>
+          <button class="primary-action" id="newOrderButton" type="button">
+            Nuevo pedido
+            <i data-lucide="refresh-cw"></i>
+          </button>
+        </div>
+      </article>
+    </div>
+
+    <div class="dialog-backdrop" id="productDialog" hidden>
+      <article class="product-dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+        <button class="dialog-close" id="closeDialogButton" type="button" aria-label="Cerrar">
+          <i data-lucide="x"></i>
+        </button>
+        <img id="dialogImage" alt="" />
+        <div class="dialog-body">
+          <span id="dialogCategory"></span>
+          <div class="dialog-title">
+            <h2 id="dialogTitle"></h2>
+            <strong id="dialogPrice"></strong>
+          </div>
+          <p id="dialogDescription"></p>
+          <div class="dialog-options" id="dialogOptions" hidden></div>
+          <button class="primary-action" id="addCurrentButton" type="button">
+            Agregar al pedido
+            <i data-lucide="plus"></i>
+          </button>
+        </div>
+      </article>
+    </div>
+
+    <section class="admin-panel" id="adminPanel" hidden aria-label="Administración de carta">
+      <div class="admin-shell">
+        <header class="admin-header">
+          <div>
+            <span>Panel interno</span>
+            <h2>Administrar carta</h2>
+          </div>
+          <button class="admin-close" id="closeAdminButton" type="button" aria-label="Cerrar administración">
+            <i data-lucide="x"></i>
+          </button>
+        </header>
+
+        <details class="admin-business">
+          <summary>Datos del local</summary>
+          <label>
+            Local
+            <input id="adminBusinessName" type="text" />
+          </label>
+          <label>
+            WhatsApp
+            <input id="adminWhatsapp" type="tel" />
+          </label>
+          <label>
+            Instagram
+            <input id="adminInstagram" type="url" />
+          </label>
+          <label>
+            Google Maps
+            <input id="adminMaps" type="url" />
+          </label>
+          <label>
+            Marca
+            <input id="adminBrandTitle" type="text" />
+          </label>
+          <label>
+            Subtítulo
+            <input id="adminBrandSubtitle" type="text" />
+          </label>
+          <button class="admin-business-save" id="saveBusinessButton" type="button">Guardar datos</button>
+        </details>
+
+        <section class="admin-section">
+          <div class="admin-section-head">
+            <div>
+              <h3>Recomendados</h3>
+              <p>Orden del slider principal.</p>
+            </div>
+          </div>
+          <div class="admin-recommended" id="adminRecommendedList"></div>
+        </section>
+
+        <section class="admin-section">
+          <div class="admin-section-head">
+            <div>
+              <h3>Familias</h3>
+              <p>Elegí una familia y administrá su submenú.</p>
+            </div>
+            <button class="admin-section-action" id="newFamilyButton" type="button">+ Nueva familia</button>
+          </div>
+          <div class="admin-family-list" id="adminFamilyList"></div>
+          <div class="admin-submenu-panel" id="adminSubmenuPanel"></div>
+        </section>
+
+        <section class="admin-section">
+          <div class="admin-toolbar">
+            <div>
+              <strong id="adminCount">0 platos</strong>
+              <span id="adminFilterLabel">Mostrando toda la carta.</span>
+            </div>
+            <button id="newProductButton" type="button">+ Nuevo plato</button>
+          </div>
+          <div class="admin-list" id="adminProductList"></div>
+          <div class="admin-reset-row">
+            <button id="resetAdminButton" type="button">Restaurar todo</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="edit-panel" id="editPanel" hidden aria-label="Editar plato">
+      <form class="edit-shell" id="adminEditor">
+        <header class="edit-header">
+          <div>
+            <span>Editar plato</span>
+            <h2 id="editPanelTitle">Plato</h2>
+          </div>
+          <button class="admin-close" id="closeEditButton" type="button" aria-label="Cerrar edición">
+            <i data-lucide="x"></i>
+          </button>
+        </header>
+
+        <input id="adminProductSelect" type="hidden" />
+        <div class="admin-preview">
+          <img id="adminPreviewImage" alt="" />
+          <div>
+            <span id="adminPreviewCategory"></span>
+            <strong id="adminPreviewTitle"></strong>
+          </div>
+        </div>
+        <button class="visibility-toggle" id="toggleProductVisibilityButton" type="button">Ocultar plato</button>
+
+        <label>
+          Nombre
+          <input id="adminTitle" type="text" />
+        </label>
+        <div class="admin-compact-grid">
+          <label>
+            Precio
+            <input id="adminPrice" type="number" min="0" step="100" />
+          </label>
+          <label>
+            Etiqueta
+            <input id="adminRank" type="text" />
+          </label>
+          <label>
+            Categoría
+            <select id="adminCategory"></select>
+          </label>
+          <label>
+            Subcategoría
+            <select id="adminSubcategory"></select>
+          </label>
+        </div>
+        <label>
+          Descripción corta
+          <textarea id="adminShort" rows="2"></textarea>
+        </label>
+        <label>
+          Imagen URL
+          <input id="adminImage" type="url" />
+        </label>
+        <label class="file-picker">
+          Cargar imagen
+          <input id="adminImageFile" type="file" accept="image/*" />
+          <span>Elegir desde el dispositivo</span>
+        </label>
+        <details class="admin-more">
+          <summary>Editar detalle largo</summary>
+          <label>
+            Detalle
+            <textarea id="adminDescription" rows="3"></textarea>
+          </label>
+        </details>
+
+        <div class="edit-actions">
+          <button id="deleteProductButton" type="button">Eliminar</button>
+          <button class="admin-save" id="saveAdminButton" type="button">Guardar cambios</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="edit-panel" id="familyPanel" hidden aria-label="Editar familia">
+      <form class="edit-shell compact-editor" id="familyEditor">
+        <header class="edit-header">
+          <div>
+            <span>Editar familia</span>
+            <h2 id="familyPanelTitle">Familia</h2>
+          </div>
+          <button class="admin-close" id="closeFamilyButton" type="button" aria-label="Cerrar edición">
+            <i data-lucide="x"></i>
+          </button>
+        </header>
+
+        <input id="familyOriginalName" type="hidden" />
+        <div class="admin-preview">
+          <img id="familyPreviewImage" alt="" />
+          <div>
+            <span>Familia</span>
+            <strong id="familyPreviewTitle"></strong>
+          </div>
+        </div>
+
+        <label>
+          Nombre
+          <input id="familyNameInput" type="text" />
+        </label>
+        <label>
+          Imagen URL
+          <input id="familyImageInput" type="url" />
+        </label>
+        <label class="file-picker">
+          Cargar imagen
+          <input id="familyImageFile" type="file" accept="image/*" />
+          <span>Elegir desde el dispositivo</span>
+        </label>
+
+        <section class="submenu-editor">
+          <div class="submenu-head">
+            <div>
+              <h3>Submenú</h3>
+              <p>Categorías internas de esta familia.</p>
+            </div>
+            <button id="newSubmenuButton" type="button">+ Agregar</button>
+          </div>
+          <div class="submenu-list" id="submenuList"></div>
+        </section>
+
+        <div class="edit-actions">
+          <button id="deleteFamilyButton" type="button">Eliminar</button>
+          <button class="admin-save" id="saveFamilyButton" type="button">Guardar familia</button>
+        </div>
+      </form>
+    </section>
+  </body>
+</html>
