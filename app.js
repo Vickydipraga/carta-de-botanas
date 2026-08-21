@@ -513,12 +513,21 @@ function renderHeroDots() {
 }
 
 function renderHeroPosition(offsetPx = 0) {
+  if (window.matchMedia("(min-width: 800px)").matches) {
+    state.heroIndex = 0;
+    heroTrack.style.transform = "none";
+    heroDots.hidden = true;
+    renderHeroDots();
+    return;
+  }
   const width = heroTrack.getBoundingClientRect().width || 1;
   heroTrack.style.transform = `translateX(${state.heroIndex * -width + offsetPx}px)`;
+  heroDots.hidden = heroProducts().length === 0;
   renderHeroDots();
 }
 
 function moveHero(direction) {
+  if (window.matchMedia("(min-width: 800px)").matches) return;
   const total = heroProducts().length;
   if (total === 0) return;
   state.heroIndex = (state.heroIndex + direction + total) % total;
@@ -527,6 +536,7 @@ function moveHero(direction) {
 
 function scheduleHero() {
   window.clearInterval(heroTimer);
+  if (window.matchMedia("(min-width: 800px)").matches) return;
   heroTimer = window.setInterval(() => moveHero(1), heroIntervalMs);
 }
 
@@ -1521,6 +1531,7 @@ submenuList.addEventListener("change", (event) => {
 });
 
 heroTrack.addEventListener("pointerdown", (event) => {
+  if (window.matchMedia("(min-width: 800px)").matches) return;
   isDraggingHero = true;
   dragStartX = event.clientX;
   dragCurrentX = 0;
@@ -1549,7 +1560,10 @@ function endHeroDrag() {
 
 heroTrack.addEventListener("pointerup", endHeroDrag);
 heroTrack.addEventListener("pointercancel", endHeroDrag);
-window.addEventListener("resize", () => renderHeroPosition());
+window.addEventListener("resize", () => {
+  renderHeroPosition();
+  scheduleHero();
+});
 
 bannerButton.addEventListener("click", () => {
   state.selectedCategory = "TRAGOS";
