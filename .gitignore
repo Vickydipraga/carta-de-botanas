@@ -12,3 +12,6 @@ Carta/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Captura local usada para validar el diseño adaptable
+/desktop-after.png
