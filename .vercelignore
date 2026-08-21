@@ -1,0 +1,6 @@
+Carta/
+.git/
+.vercel/
+server.out.log
+server.err.log
+
