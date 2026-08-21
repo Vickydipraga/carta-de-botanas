@@ -2527,3 +2527,382 @@ body.admin-mode .admin-shell {
     font-size: 13px;
   }
 }
+
+/* Vista de escritorio: conserva la experiencia móvil por debajo de 800 px. */
+@media (min-width: 800px) {
+  body {
+    background:
+      radial-gradient(circle at 8% 8%, rgba(232, 95, 12, 0.1), transparent 28rem),
+      radial-gradient(circle at 94% 30%, rgba(89, 97, 27, 0.1), transparent 26rem),
+      linear-gradient(180deg, #fffdf9 0%, var(--bg) 46%, #f7efe3 100%);
+  }
+
+  .mobile-app {
+    width: min(100%, 1280px);
+    min-height: 100vh;
+    padding: 0 42px 64px;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .app-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    grid-template-columns: auto 1fr;
+    min-height: 104px;
+    margin: 0 -42px 26px;
+    padding: 12px 42px;
+    border-bottom: 1px solid rgba(44, 30, 18, 0.08);
+    background: rgba(251, 247, 239, 0.9);
+    box-shadow: 0 10px 32px rgba(60, 42, 22, 0.05);
+    backdrop-filter: blur(18px);
+  }
+
+  .app-header .brand {
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  .app-header::after {
+    justify-self: end;
+    color: #6f665d;
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.24em;
+    content: "CARTA DIGITAL";
+  }
+
+  .brand-logo {
+    width: 190px;
+    max-height: 70px;
+  }
+
+  .section-head {
+    margin: 0 0 14px;
+  }
+
+  .section-head h1 {
+    font-size: 1.05rem;
+  }
+
+  .section-head h1 svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero-slider,
+  .hero-track {
+    height: 340px;
+    min-height: 340px;
+  }
+
+  .hero-slider {
+    border-radius: 30px;
+    box-shadow: 0 26px 64px rgba(44, 28, 13, 0.18);
+  }
+
+  .hero-content {
+    min-height: 340px;
+    max-width: 48%;
+    padding: 38px 44px;
+  }
+
+  .hero-content h2 {
+    margin-bottom: 12px;
+    font-size: clamp(2.1rem, 3vw, 3rem);
+  }
+
+  .hero-content p {
+    max-width: 470px;
+    margin-bottom: 14px;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .hero-content strong {
+    margin-bottom: 16px;
+    font-size: 1.35rem;
+  }
+
+  .orange-button {
+    min-height: 44px;
+    padding-inline: 20px;
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+
+  .orange-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(232, 95, 12, 0.28);
+  }
+
+  .top-pill {
+    top: 22px;
+    right: 24px;
+    padding: 8px 15px;
+    font-size: 0.82rem;
+  }
+
+  .slider-dots {
+    padding: 14px 0 28px;
+  }
+
+  .slider-dots button {
+    width: 10px;
+    height: 10px;
+  }
+
+  .category-strip {
+    grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+    grid-auto-columns: initial;
+    grid-auto-flow: row;
+    gap: 18px 12px;
+    overflow: visible;
+    padding: 6px 0 28px;
+  }
+
+  .category-card {
+    padding: 10px 5px 7px;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    transition: transform 170ms ease, background 170ms ease, border-color 170ms ease;
+  }
+
+  .category-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(232, 95, 12, 0.12);
+    background: rgba(255, 253, 248, 0.74);
+  }
+
+  .category-card img {
+    width: 86px;
+    height: 86px;
+  }
+
+  .category-card span {
+    min-height: 38px;
+    max-height: 38px;
+    font-size: 0.86rem;
+  }
+
+  .subcategory-strip {
+    grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+    grid-auto-columns: initial;
+    grid-auto-flow: row;
+    gap: 16px;
+    overflow: visible;
+    margin: 0 0 22px;
+    padding: 18px 20px;
+    border: 1px solid rgba(44, 30, 18, 0.08);
+    border-radius: 24px;
+    background: rgba(255, 253, 248, 0.64);
+  }
+
+  .subcategory-card {
+    padding: 6px;
+    border-radius: 16px;
+    transition: transform 160ms ease, background 160ms ease;
+  }
+
+  .subcategory-card:hover {
+    transform: translateY(-2px);
+    background: #fff;
+  }
+
+  .subcategory-card img {
+    width: 72px;
+    height: 72px;
+  }
+
+  .subcategory-card span {
+    min-height: 34px;
+    max-height: 34px;
+    font-size: 0.8rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .menu-notice {
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    border-radius: 18px;
+    font-size: 0.92rem;
+  }
+
+  .dish-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .dish-card {
+    grid-template-columns: 104px minmax(0, 1fr) 42px;
+    gap: 14px;
+    min-height: 126px;
+    padding: 11px;
+    border-radius: 22px;
+    box-shadow: 0 14px 34px rgba(60, 42, 22, 0.07);
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  .dish-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(232, 95, 12, 0.18);
+    box-shadow: 0 20px 42px rgba(60, 42, 22, 0.12);
+  }
+
+  .dish-card img,
+  .card-image-button {
+    width: 104px;
+    height: 100px;
+  }
+
+  .dish-card h3 {
+    margin-bottom: 7px;
+    font-size: 1.02rem;
+    line-height: 1.2;
+  }
+
+  .dish-card p {
+    font-size: 0.83rem;
+  }
+
+  .add-button {
+    transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+  }
+
+  .add-button:hover:not(:disabled) {
+    transform: scale(1.08);
+    background: var(--orange);
+    color: #fff;
+  }
+
+  .empty-state {
+    grid-column: 1 / -1;
+  }
+
+  .promo-card {
+    min-height: 250px;
+    margin: 34px 0 10px;
+    padding: 28px 34px;
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 0.9fr);
+    gap: 38px;
+    border-radius: 30px;
+  }
+
+  .promo-title {
+    max-width: 560px;
+    font-size: 2rem;
+  }
+
+  .promo-image-wrap {
+    height: 210px;
+    border-radius: 24px;
+  }
+
+  .quick-actions {
+    width: min(100%, 660px);
+    margin: 30px auto 0;
+    gap: 12px;
+  }
+
+  .quick-action {
+    min-height: 64px;
+    border-radius: 18px;
+  }
+
+  .quick-action:hover {
+    transform: translateY(-3px);
+    border-color: rgba(232, 95, 12, 0.2);
+    background: #fff;
+  }
+
+  .quick-action svg,
+  .quick-brand-icon {
+    width: 21px;
+    height: 21px;
+  }
+
+  .quick-action span:last-child {
+    font-size: 0.72rem;
+  }
+
+  .floating-cart {
+    right: 34px;
+    bottom: 32px;
+    width: 62px;
+    height: 62px;
+  }
+
+  .cart-toast {
+    bottom: 32px;
+  }
+
+  .order-panel {
+    right: 30px;
+    bottom: 30px;
+    left: auto;
+    width: 430px;
+    max-height: min(80vh, 680px);
+    padding: 18px;
+    border-radius: 28px;
+  }
+
+  .order-items {
+    max-height: 280px;
+  }
+
+  .dialog-backdrop {
+    place-items: center;
+    padding: 28px;
+  }
+
+  .product-dialog {
+    display: grid;
+    grid-template-columns: minmax(320px, 0.9fr) minmax(360px, 1.1fr);
+    width: min(100%, 820px);
+    max-height: 82vh;
+    overflow: hidden;
+    border-radius: 28px;
+  }
+
+  .product-dialog > img {
+    width: 100%;
+    height: 100%;
+    min-height: 440px;
+    object-fit: cover;
+  }
+
+  .dialog-body {
+    align-content: center;
+    padding: 36px;
+    overflow: auto;
+  }
+
+  .dialog-title h2 {
+    font-size: 2.15rem;
+  }
+
+  .review-dialog,
+  .qr-dialog {
+    width: min(100%, 520px);
+    border-radius: 28px;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1080px) {
+  .mobile-app {
+    padding-inline: 28px;
+  }
+
+  .app-header {
+    margin-inline: -28px;
+    padding-inline: 28px;
+  }
+
+  .dish-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-content {
+    max-width: 58%;
+  }
+}
